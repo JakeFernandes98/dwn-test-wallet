@@ -1,0 +1,79 @@
+
+//Generated via ION
+did = {
+  "did": "did:key:z6Mkiuq8bZnus695S88uB76Fxi4yumME7eEufdg4FwHTEW4e",
+  "keyId": "did:key:z6Mkiuq8bZnus695S88uB76Fxi4yumME7eEufdg4FwHTEW4e#z6Mkiuq8bZnus695S88uB76Fxi4yumME7eEufdg4FwHTEW4e",
+  "keyPair": {
+      "publicJwk": {
+          "alg": "EdDSA",
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "Qj1CcVvw_3bwDtDc4owIlh7L3IhvXxLH0c7jcTHTnQ8"
+      },
+      "privateJwk": {
+          "alg": "EdDSA",
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "Qj1CcVvw_3bwDtDc4owIlh7L3IhvXxLH0c7jcTHTnQ8",
+          "d": "wBCOdfFP_mOtU5cD3d6Zml8Ebhje4I6_8exhyOh62Hc"
+      }
+  }
+}
+
+const jsonStringified = JSON.stringify({
+  date: new Date(),
+  "wheelchair": true,
+  "troubleWalking": false
+});
+
+const jsonBytes = new TextEncoder().encode(jsonStringified);
+
+//Part of the JWS Signing method (the JWS signing method should produce the authorization object in the final JSON)
+const signatureInput = {
+  privateJwk      : did.keyPair.privateJwk,
+  protectedHeader : {
+    alg : did.keyPair.privateJwk.alg,
+    kid : did.keyId
+  }
+};
+
+let recordsWriteOptions = {
+  data: jsonBytes,
+  dataFormat: 'application/json',
+  protocol: 'test',
+  target: did.did,
+  schema: 'test/accessibility',
+  signatureInput : signatureMaterial
+};
+
+
+//The method we are trying to mock
+const recordsWrite = await RecordsWrite.create(recordsWriteOptions);
+
+//The final result from the code you are writing
+console.log(recordsWrite.JSON())
+
+
+{
+  "recordId": "bafyreiaovrxlral7a7fmf4m5txx5djup2sybi3h2vnql6fkzctdi62nzge",
+  "descriptor": {
+      "method": "RecordsWrite",
+      "protocol": "test",
+      "schema": "test/accessibility",
+      "dataCid": "bafybeig4crf7vdiypfmzn7xjog6lmnhssu3osrpcw5lpnj3te37cshubry",
+      "dateCreated": "2023-03-13T11:15:31.977131",
+      "dateModified": "2023-03-13T11:15:31.977131",
+      "dataFormat": "application/json"
+  },
+  "authorization": {
+      "payload": "eyJ0YXJnZXQiOiJkaWQ6a2V5Ono2TWtpdXE4YlpudXM2OTVTODh1Qjc2RnhpNHl1bU1FN2VFdWZkZzRGd0hURVc0ZSIsInJlY29yZElkIjoiYmFmeXJlaWFvdnJ4bHJhbDdhN2ZtZjRtNXR4eDVkanVwMnN5YmkzaDJ2bnFsNmZremN0ZGk2Mm56Z2UiLCJkZXNjcmlwdG9yQ2lkIjoiYmFmeXJlaWZrdWlhamF3amo3ZnB5NDJuMmw2N2FqbnlmaWQ1aGNmbDI2NW5raWo2aDZxb3RncnVlajQiLCJjb250ZXh0SWQiOiJiYWZ5cmVpYW92cnhscmFsN2E3Zm1mNG01dHh4NWRqdXAyc3liaTNoMnZucWw2Zmt6Y3RkaTYybnpnZSJ9",
+      "signatures": [
+          {
+              "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa2l1cThiWm51czY5NVM4OHVCNzZGeGk0eXVtTUU3ZUV1ZmRnNEZ3SFRFVzRlI3o2TWtpdXE4YlpudXM2OTVTODh1Qjc2RnhpNHl1bU1FN2VFdWZkZzRGd0hURVc0ZSJ9",
+              "signature": "b1_OcuSVG5NdbzeiSaCFYYf2U341kumb3sUErHANjJHeiemjT98a3rXNlCnoQ__rlDH6JhNEN_HDi6kBL3TCCA"
+          }
+      ]
+  },
+  "encodedData": "eyJkYXRlIjoiMjAyMy0wMy0xM1QxMToxNTozMS45NzZaIiwid2hlZWxjaGFpciI6dHJ1ZSwidHJvdWJsZVdhbGtpbmciOmZhbHNlfQ",
+  "contextId": "bafyreiaovrxlral7a7fmf4m5txx5djup2sybi3h2vnql6fkzctdi62nzge"
+// }
