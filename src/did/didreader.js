@@ -14,7 +14,7 @@ export function DidReader(props) {
         let data = props.dwn.decodeRecordsQueryData(response)
         let str = ""
         data.forEach(d => {
-            str+=d.toString()
+            str+=JSON.stringify(d)
         });
         str+="\n"
         setReadResponse(str)
