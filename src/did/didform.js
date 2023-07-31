@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { DidKeyResolver} from 'fork-of-dwn-sdk-js';
 import { initProtocol } from '../dwn/protocol';
-import { DidPerm, DidReader, DidWriter } from './index'
+import { DidPerm, DidReader, DidWriter, DidPermReader } from './index'
 import { DwnHelper } from '../dwn/dwn';
 
 export function DidForm(props) {
 
 
   const [didData, setDidData] = useState('')
-  const [dwnTarget, setDwnTarget] = useState('')
+  const [dwnTarget, setDwnTarget] = useState('https://a064-152-37-95-108.ngrok-free.app')
   const [dwn, setDwn] = useState(undefined)
 
   useEffect(() => {
@@ -53,6 +53,7 @@ export function DidForm(props) {
   const handleDidKey = async () => {
     const didKey = await DidKeyResolver.generate();
     setDidData(didKey)
+    initProtocol(dwn, didKey)
   }
 
 
@@ -110,6 +111,12 @@ export function DidForm(props) {
       <br />
 
       <DidPerm dwn={dwn} did={didData} />
+
+      <br />
+      <br />
+      <br />
+
+      <DidPermReader dwn={dwn} did={didData} />
 
       <br />
       <br />

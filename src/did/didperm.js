@@ -7,15 +7,8 @@ export function DidPerm(props) {
     const [permRead, setPermRead] = useState(false);
     const [permProtocolData, setPermProtocolData] = useState('')
 
-    const handlePermission = async () => {
-        var e = document.getElementById("dwnMethod");
-        var value = e.value;
-        if(e.value == 'grant') await grantPerms()
-        else if(e.value == 'request') await requestPerms()
-    }
 
     function reset(){
-        setTargetDid('')
         setPermWrite(false)
         setPermRead(false)
         setPermProtocolData(false)
@@ -30,10 +23,10 @@ export function DidPerm(props) {
             console.log(msg)
             props.dwn.send(msg)
         });
-        setTargetDid('')
     };
 
     async function requestPerms(){
+        console.log('requesting perms')
         let messages = []
         if(targetDid === ''){
             if(permRead) messages.push(await props.dwn.createPermissionsOpenRequest('RecordsQuery', permProtocolData, props.did))
@@ -62,12 +55,6 @@ export function DidPerm(props) {
 
             <br />
             <br />
-            <select id='dwnMethod'>
-                <option value="grant">Grant</option>
-                <option value="request">Request</option>
-            </select>
-            <br />
-            <br />
 
             <label>
                 Protocol:
@@ -94,7 +81,8 @@ export function DidPerm(props) {
             <br />
 
 
-            <button onClick={handlePermission}>Send</button>
+            <button onClick={requestPerms}>Request</button>
+            <button onClick={grantPerms}>Grant</button>
 
         </div>
     )

@@ -8,7 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "didcomm": "^0.4.0",
-    "fork-of-dwn-sdk-js": "file:../vispasspoc-dwn/dwndk",
+    "fork-of-dwn-sdk-js": "^0.1.10",
     "fs": "^0.0.1-security",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

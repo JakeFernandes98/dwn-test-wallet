@@ -1,4 +1,4 @@
-import { Dwn, ProtocolsConfigure, RecordsQuery, RecordsWrite, PermissionsRequest, PermissionsGrant, PermissionsOpenRequest, PermissionsRead, Encoder } from 'fork-of-dwn-sdk-js';
+import { Dwn, ProtocolsConfigure, RecordsQuery, RecordsWrite, PermissionsRequest, PermissionsGrant, PermissionsReject, PermissionsOpenRequest, PermissionsRead, Encoder } from 'fork-of-dwn-sdk-js';
 import { anchor, DID, generateKeyPair, resolve } from '@decentralized-identity/ion-tools';
 import {useState} from 'react'
 // import fetch from "node-fetch";
@@ -373,6 +373,54 @@ export class DwnHelper {
     return permissionsQuery.toJSON();
 
   }
+
+  async createPermissionsGrantFromMessage(message, structuredDidKey) {
+    const signatureMaterial = this.createSignatureInput(structuredDidKey)
+  
+    const opts = {
+      ...message.descriptor,
+      target: structuredDidKey.did,
+      signatureInput: signatureMaterial,
+    }
+  
+    console.log('opts ', opts)
+    const permissionsQuery = await PermissionsGrant.create(opts)
+    return permissionsQuery.toJSON();
+  }
+
+  async createPermissionsRejectFromMessage(message, structuredDidKey) {
+    const signatureMaterial = this.createSignatureInput(structuredDidKey)
+  
+    const opts = {
+      ...message.descriptor,
+      target: structuredDidKey.did,
+      signatureInput: signatureMaterial,
+    }
+  
+    console.log('opts ', opts)
+    const permissionsQuery = await PermissionsReject.create(opts)
+    return permissionsQuery.toJSON();
+  }
+
+
+  /**
+  * Takes a PermissionsRequest object and returns a PermissionsGrant object
+  * given the user has accepted the terms
+    * @param {object} permissionsRequest
+    * @param {object} structuredDidKey
+    * @returns {Promise<object>} PermissionsGrant
+  */
+  async processPermission(permissionsRequest, structuredDidKey, accept) {
+    console.log('this is me trying to process', permissionsRequest)
+    if (accept){
+      return await this.createPermissionsGrantFromMessage(permissionsRequest, structuredDidKey)
+    }else{
+      return await this.createPermissionsRejectFromMessage(permissionsRequest, structuredDidKey)
+    }
+    
+  }
+
+  
 
   decodeRecordsQueryEntries(result){
     result.entries.forEach(element => {
