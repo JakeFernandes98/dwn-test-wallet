@@ -377,6 +377,7 @@ export class DwnHelper {
   async createPermissionsGrantFromMessage(message, structuredDidKey) {
     const signatureMaterial = this.createSignatureInput(structuredDidKey)
   
+    delete message.descriptor.dateCreated
     const opts = {
       ...message.descriptor,
       target: structuredDidKey.did,
@@ -391,6 +392,7 @@ export class DwnHelper {
   async createPermissionsRejectFromMessage(message, structuredDidKey) {
     const signatureMaterial = this.createSignatureInput(structuredDidKey)
   
+    delete message.descriptor.dateCreated
     const opts = {
       ...message.descriptor,
       target: structuredDidKey.did,

@@ -12,6 +12,7 @@ export function DidPermReader(props){
             let msg = await props.dwn.processPermission(i,props.did, true)
             let response = await props.dwn.send(msg)
         });
+        handleRead()
     }
 
     const rejectPerms = async (permissions) => {
@@ -20,6 +21,7 @@ export function DidPermReader(props){
             let msg = await props.dwn.processPermission(i,props.did, false)
             let response = await props.dwn.send(msg)
         });
+        handleRead()
     }
 
     const handleRead = async () => {

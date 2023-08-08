@@ -5,7 +5,7 @@ export function DidPerm(props) {
     const [targetDid, setTargetDid] = useState('');
     const [permWrite, setPermWrite] = useState(false);
     const [permRead, setPermRead] = useState(false);
-    const [permProtocolData, setPermProtocolData] = useState('')
+    const [permProtocolData, setPermProtocolData] = useState('neomvp/accessibility')
 
 
     function reset(){

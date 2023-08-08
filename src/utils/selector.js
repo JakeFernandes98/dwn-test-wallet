@@ -47,6 +47,28 @@ const PermissionRequests = ({ permissions, handleAccept, handleReject }) => {
         padding: '10px',
         display: 'flex',
         flexDirection: 'column',
+        whiteSpace: 'pre-wrap', 
+        overflowWrap: 'break-word'
+    },
+    listItemAccepted: {
+      border: '1px solid #e1e1e1',
+      margin: '10px 0',
+      padding: '10px',
+      display: 'flex',
+      flexDirection: 'column',
+      color: 'green',
+      whiteSpace: 'pre-wrap', 
+      overflowWrap: 'break-word'
+    },
+    listItemRejected: {
+      border: '1px solid #e1e1e1',
+      margin: '10px 0',
+      padding: '10px',
+      display: 'flex',
+      flexDirection: 'column',
+      color: 'red',
+      whiteSpace: 'pre-wrap', 
+      overflowWrap: 'break-word'
     },
     checkbox: {
         display: 'block',
@@ -67,6 +89,7 @@ const PermissionRequests = ({ permissions, handleAccept, handleReject }) => {
     <div>
       <ul style={styles.list}>
         {permissions.map((permission, index) => (
+          permission.descriptor.method === "PermissionsRequest" ?
           <li key={index} style={styles.listItem}>
             <input 
               type="checkbox"
@@ -74,12 +97,41 @@ const PermissionRequests = ({ permissions, handleAccept, handleReject }) => {
               onChange={() => toggleSelected(index)}
               style={styles.checkbox}
             />
-            <div style={styles.detail}>{`From: ${permission.descriptor.grantedTo}`}</div>
+            <div style={styles.detail}>{`From: ${permission.descriptor.grantedTo.substring(0,20)}`}</div>
             <div style={styles.detail}>{`Method: ${permission.descriptor.scope.method}`}</div>
             <div style={styles.detail}>{`Schema: ${permission.descriptor.scope.schema}`}</div>
             <div style={styles.detail}>{`Date: ${permission.descriptor.dateCreated}`}</div>
           </li>
-        ))}
+        :
+        permission.descriptor.method === "PermissionsGrant" ?
+        <li key={index} style={styles.listItemAccepted}>
+          <input 
+            type="checkbox"
+            checked={selected.includes(index)}
+            onChange={() => toggleSelected(index)}
+            style={styles.checkbox}
+          />
+          <div style={styles.detail}>{`From: ${permission.descriptor.grantedTo.substring(0,20)}`}</div>
+          <div style={styles.detail}>{`Method: ${permission.descriptor.scope.method}`}</div>
+          <div style={styles.detail}>{`Schema: ${permission.descriptor.scope.schema}`}</div>
+          <div style={styles.detail}>{`Date: ${permission.descriptor.dateCreated}`}</div>
+        </li>
+        :
+        <li key={index} style={styles.listItemRejected}>
+          <input 
+            type="checkbox"
+            checked={selected.includes(index)}
+            onChange={() => toggleSelected(index)}
+            style={styles.checkbox}
+          />
+          <div style={styles.detail}>{`From: ${permission.descriptor.grantedTo.substring(0,20)}`}</div>
+          <div style={styles.detail}>{`Method: ${permission.descriptor.scope.method}`}</div>
+          <div style={styles.detail}>{`Schema: ${permission.descriptor.scope.schema}`}</div>
+          <div style={styles.detail}>{`Date: ${permission.descriptor.dateCreated}`}</div>
+        </li>
+      )
+
+      )}
       </ul>
       <button onClick={acceptSelected} style={styles.button}>Accept Selected</button>
       <button onClick={rejectSelected} style={styles.button}>Reject Selected</button>

@@ -8,13 +8,14 @@ export function DidForm(props) {
 
 
   const [didData, setDidData] = useState('')
-  const [dwnTarget, setDwnTarget] = useState('https://a064-152-37-95-108.ngrok-free.app')
+  const [dwnTarget, setDwnTarget] = useState('https://3d05-152-37-95-108.ngrok-free.app')
   const [dwn, setDwn] = useState(undefined)
 
   useEffect(() => {
-    setDwn(new DwnHelper(dwnTarget))
     async function startDwn(){
+      let dwn = new DwnHelper(dwnTarget)
       await dwn.init()
+      setDwn(dwn)
     } 
     startDwn()
   }, [dwnTarget])
